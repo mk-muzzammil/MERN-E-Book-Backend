@@ -3,6 +3,7 @@ import GlobalErrorHanlder from "./middlewares/GlobalErrorHandler";
 import userRouter from "./user/userRouter";
 const app = express();
 
+app.use(express.json());
 app.get("/", (req, res, next) => {
   res.json({ message: "Hello This is E book store" });
 });

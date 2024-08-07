@@ -24,3 +24,6 @@ many middlewares registered in every middleware we will use next() and pass req 
 
 =======================================Starting with the structure building and logic of Project======================
 Now here comes different that user will built for their easyness one is MVC which is very popular in which we will work by making model,views,controllers but in this project i am trying another good method in which i will make folder according to users and all the user related files will be in it most proably userController,userRouter,userModel;
+
+===============================Register login user working along with jwt ===========================
+Simple as we do before to register a user so when we register a user we will make a token which we send as a response when the user is created and when the user will login the acessToken will be given to the user and send as a response to client and then when client req the jwt token will be added to the header of client so that on server it is verified that it is authenticated user or not
