@@ -1,3 +1,4 @@
 ================Basic Setup===============
 For typescript based project initializing we will make a new foldr then npm init and after it install some devDependencies fo rtypescript typescript,ts-node,@types/node,nodemon insatll all these dep and after it we will initialize the ts congiguration file 
 Command==>npx ts --init and after it make a gitignore file of rit ctrl+shift+L+P add a git ignore and of node 
+npm init @eslint/config is ver imp package which will help us to identify errors in our porject must be available in every project made
