@@ -17,3 +17,10 @@ npm init @eslint/config is ver imp package which will help us to identify errors
 
 many middlewares registered in every middleware we will use next() and pass req to next middleware and so on to req handler and then handler wil sent response back to client , But Global hanlder(Soecial kind of middleware) must e at the end after the req handler if any error comes then we will pass erorr to global error hanlder by using next(error) and then response is send back to client by the Global error handler 
 ==>One extra thing is for throwing errors we will use http-error package to send customized error and also it is catched by out global handler and in global handler we wil send res along with error message and error stack but kept one thing in mind errorStack must be sent on development phase not porduction one 
+-----------------------------------------------------------------------------------------------------------
+
+=======================================Basic Setup of Project completed====================================
+-----------------------------------------------------------------------------------------------------------
+
+=======================================Starting with the structure building and logic of Project======================
+Now here comes different that user will built for their easyness one is MVC which is very popular in which we will work by making model,views,controllers but in this project i am trying another good method in which i will make folder according to users and all the user related files will be in it most proably userController,userRouter,userModel;

@@ -1,6 +1,6 @@
-import { config } from "./config/config";
+import { config } from "./src/config/config";
 import app from "./src/app";
-import startDBConnection from "./config/databaseConection";
+import startDBConnection from "./src/config/databaseConection";
 
 const StartSevrer = () => {
   const PORT = config.PORT || 3000;
