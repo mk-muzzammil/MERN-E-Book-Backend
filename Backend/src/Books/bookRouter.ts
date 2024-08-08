@@ -1,7 +1,7 @@
 import express from "express";
 import { body } from "express-validator";
 import path from "node:path";
-import { postCreateBook } from "./bookController";
+import { postCreateBook, postUpdateBook } from "./bookController";
 import multer from "multer";
 import tokenVerification from "../middlewares/tokenVerification";
 const bookRouter = express.Router();
@@ -21,6 +21,17 @@ bookRouter.post(
   ]),
 
   postCreateBook
+);
+bookRouter.patch(
+  "/:bookId",
+  tokenVerification,
+
+  uploadMulter.fields([
+    { name: "pdfFile", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+  ]),
+
+  postUpdateBook
 );
 
 export default bookRouter;
