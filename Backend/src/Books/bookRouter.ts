@@ -1,24 +1,23 @@
 import express from "express";
 import { body } from "express-validator";
+import path from "node:path";
 import { postCreateBook } from "./bookController";
+import multer from "multer";
 const bookRouter = express.Router();
+//==========Multer Configuration=======
+const uploadMulter = multer({
+  dest: path.resolve(__dirname, "../../public/data/Uploads"),
+  limits: { fileSize: 3e7 }, //3e7 ==>30mb
+});
 
 bookRouter.post(
   "/create-book",
-  [
-    body(
-      "title",
-      "Please enter correct title not include numbers and of min length 5"
-    )
-      .isAlpha()
-      .isLength({ min: 5 }),
-    body(
-      "genre",
-      "Please enter correct genre not include numbers and of min length 5"
-    )
-      .isAlpha()
-      .isLength({ min: 5 }),
-  ],
+
+  uploadMulter.fields([
+    { name: "pdfFile", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+  ]),
+
   postCreateBook
 );
 

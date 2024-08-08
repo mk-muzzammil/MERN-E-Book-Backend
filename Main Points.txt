@@ -27,3 +27,6 @@ Now here comes different that user will built for their easyness one is MVC whic
 
 ===============================Register login user working along with jwt ===========================
 Simple as we do before to register a user so when we register a user we will make a token which we send as a response when the user is created and when the user will login the acessToken will be given to the user and send as a response to client and then when client req the jwt token will be added to the header of client so that on server it is verified that it is authenticated user or not
+
+=======================Book Crud Operations along with multer multipart Formdata =====================
+So here now i built mvc for the book so that we will perform crud operations and additonally i have made a bookTypes file which help to make Schema and tell shcema boutt he types of field in the Schema and after it i will start working with multer for working with multipart formdata so this will be done in bookRouter bcz when we add it as a middleware to the book Routes we can acess the files in this way but previously we wil register multer middleware in app.ts which means that wil be public to all 
