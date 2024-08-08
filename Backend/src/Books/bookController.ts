@@ -5,6 +5,7 @@ import createHttpError, { HttpError } from "http-errors";
 import cloudinary from "../config/cloudinaryConfig";
 import path from "path";
 import fs from "fs";
+import { AuthRequest } from "../middlewares/tokenVerification";
 
 const uploadToCloudinary = (
   FolderName: string,
@@ -78,11 +79,12 @@ const postCreateBook = async (
     const coverImageSecureUrl = coverImageResult.secure_url;
     const pdfFileSecureUrl = pdfFileResult.secure_url;
 
+    const _req = req as AuthRequest;
     // Database process
     const { title, genre } = req.body;
     const newBook = new Book({
       title,
-      author: "66b4026fb802edbf7cc59538",
+      author: _req.userId,
       genre,
       coverImage: coverImageSecureUrl,
       pdfFile: pdfFileSecureUrl,
