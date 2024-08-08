@@ -7,6 +7,9 @@ const _config = {
   MONGO_URI: process.env.MONGO_URI,
   NODE_ENV: process.env.NODE_ENV,
   JSON_WEB_TOKEN_SECRET: process.env.JSON_WEB_TOKEN_SECRET,
+  Cloudinary_api_key: process.env.Cloudinary_api_key,
+  Cloudinary_api_secret: process.env.Cloudinary_api_secret,
+  Cloudinary_Cloud_Name: process.env.Cloudinary_Cloud_Name,
   // JWT_SECRET:process.env.JWT_SECRET,
   // JWT_EXPIRE:process.env.JWT_EXPIRE,
   // JWT_COOKIE_EXPIRE:process.env.JWT_COOKIE_EXPIRE

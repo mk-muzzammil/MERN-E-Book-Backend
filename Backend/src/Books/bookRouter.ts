@@ -3,6 +3,7 @@ import { body } from "express-validator";
 import path from "node:path";
 import { postCreateBook } from "./bookController";
 import multer from "multer";
+import tokenVerification from "../middlewares/tokenVerification";
 const bookRouter = express.Router();
 //==========Multer Configuration=======
 const uploadMulter = multer({
@@ -12,6 +13,7 @@ const uploadMulter = multer({
 
 bookRouter.post(
   "/create-book",
+  tokenVerification,
 
   uploadMulter.fields([
     { name: "pdfFile", maxCount: 1 },
