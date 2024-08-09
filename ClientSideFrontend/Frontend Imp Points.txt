@@ -3,4 +3,5 @@ So we wil make a new project of next by command npx create-next-app@latest After
 
 ==>After this we will make out navBar with icond used of fontawesome so install it with 
 npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
-and after it use it in our component
+and after it use it in our component so after this i have created my navBar and  also banner for my frontend
+===>Here comes twist there are 2 types of components in nextjs client and server:server components are processed or renderd on nextjs server and after processing and fetching of data from api the html will be sent to the client component which wil be rendered on client side by default all components are server we can make it client comp by append use client to the top 

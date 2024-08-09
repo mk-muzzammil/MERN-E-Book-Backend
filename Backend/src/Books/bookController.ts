@@ -91,13 +91,14 @@ const postCreateBook = async (
 
     const _req = req as AuthRequest;
     // Database process
-    const { title, genre } = req.body;
+    const { title, genre, description } = req.body;
     const newBook = new Book({
       title,
       author: _req.userId,
       genre,
       coverImage: coverImageSecureUrl,
       pdfFile: pdfFileSecureUrl,
+      description,
     });
 
     // Delete the local files after successful upload
@@ -226,10 +227,10 @@ const postUpdateBook = async (
 };
 const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
   const pageNumber = parseInt(req.query.page as string) || 1;
-  const NoOfbooksPerPage = 1;
+  const NoOfbooksPerPage = 3;
 
   Book.find()
-    .populate("author", "name email")
+    .populate("author", "name")
     .skip((pageNumber - 1) * NoOfbooksPerPage)
     .limit(NoOfbooksPerPage)
     .then((books) => {
@@ -256,11 +257,11 @@ const getBookById = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const book = await Book.findById(bookId);
+    const book = await Book.findById(bookId).populate("author", "name");
     if (!book) {
       return next(createHttpError(404, "Book Not Found"));
     }
-    res.status(200).json({ message: "Book Fetched Successfully", book });
+    res.status(200).json(book);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
       return next(createHttpError(404, "Book Not Found"));

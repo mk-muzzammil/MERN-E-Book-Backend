@@ -5,7 +5,7 @@ import bookImage from "../../../../public/book.png";
 const Banner = () => {
   return (
     <>
-      <div className="flex justify-center border-2 my-10 max-w-6xl items-center border-4 border-red-50 mx-auto">
+      <div className="flex justify-center border-2 my-10 max-w-7xl items-center border-4 border-red-50 mx-auto">
         <div className="relative ">
           <Image
             src={PaperImage}

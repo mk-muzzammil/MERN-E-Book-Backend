@@ -7,4 +7,5 @@ export interface Book {
   genre: string;
   pdfFile: string;
   coverImage: string;
+  description: string;
 }

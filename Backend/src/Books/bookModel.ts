@@ -26,6 +26,10 @@ const bookSchema = new Schema<Book>(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

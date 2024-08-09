@@ -6,7 +6,7 @@ import Link from "next/link";
 const NavBar = () => {
   return (
     <>
-      <nav className="max-w-6xl mx-auto flex items-center justify-between border   py-3 border-b-2">
+      <nav className="max-w-7xl mx-auto flex items-center justify-between border   py-3 border-b-2">
         <div className="flex items-center">
           <Link href={"/"}>
             <div className="relative">
