@@ -227,7 +227,7 @@ const postUpdateBook = async (
 };
 const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
   const pageNumber = parseInt(req.query.page as string) || 1;
-  const NoOfbooksPerPage = 3;
+  const NoOfbooksPerPage = 7;
 
   Book.find()
     .populate("author", "name")
