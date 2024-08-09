@@ -1,15 +1,14 @@
 import React from "react";
 import Image from "next/image";
-import PaperBgImage from "../../public/paper-bg.jpg";
-import bookImage from "../../public/book.png";
-
+import PaperImage from "../../../../public/paper-bg.jpg";
+import bookImage from "../../../../public/book.png";
 const Banner = () => {
   return (
     <>
       <div className="flex justify-center border-2 my-10 max-w-6xl items-center border-4 border-red-50 mx-auto">
         <div className="relative ">
           <Image
-            src={PaperBgImage}
+            src={PaperImage}
             alt={"paper background"}
             className=" h-[200px] rounded-xl"
           />
