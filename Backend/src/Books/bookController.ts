@@ -1,4 +1,4 @@
-import { validationResult } from "express-validator";
+import { Result, validationResult } from "express-validator";
 import Book from "./bookModel";
 import { Request, Response, NextFunction } from "express";
 import createHttpError, { HttpError } from "http-errors";
@@ -6,6 +6,8 @@ import cloudinary from "../config/cloudinaryConfig";
 import path from "path";
 import fs from "fs";
 import { AuthRequest } from "../middlewares/tokenVerification";
+import mongoose from "mongoose";
+import { promises } from "dns";
 
 const uploadToCloudinary = (
   FolderName: string,
@@ -19,6 +21,14 @@ const uploadToCloudinary = (
     filename_override: FileName,
     format: Mimetype,
     resource_type: resourceType as "auto" | "raw" | "image" | "video",
+  });
+};
+const deleteFromCloudinary = (
+  publicId: string,
+  resoucetype: string = "auto"
+) => {
+  return cloudinary.uploader.destroy(publicId, {
+    resource_type: resoucetype as "auto" | "raw" | "image" | "video",
   });
 };
 const postCreateBook = async (
@@ -92,6 +102,7 @@ const postCreateBook = async (
 
     // Delete the local files after successful upload
     await fs.promises.unlink(coverfilePath);
+
     await fs.promises.unlink(pdfFilePath);
 
     const book = await newBook.save();
@@ -141,6 +152,12 @@ const postUpdateBook = async (
     let pdfFileSecureUrl = book.pdfFile;
     if (files.coverImage || files.pdfFile) {
       if (files.coverImage) {
+        //first delete the old cover image from cloudinary and then new one uploaded
+        const coverImagePublicId =
+          book.coverImage.split("/").at(-2) +
+          "/" +
+          book.coverImage.split("/").at(-1)?.split(".").at(0);
+        await deleteFromCloudinary(coverImagePublicId, "image");
         const coverfileName = files.coverImage[0].filename;
         const coverfilePath = path.resolve(
           __dirname,
@@ -159,6 +176,12 @@ const postUpdateBook = async (
         console.log(coverImageSecureUrl);
       }
       if (files.pdfFile) {
+        //first delete the old pdfFile from cloudinary and then new one uploaded
+
+        const pdffilePublicId =
+          book.pdfFile.split("/").at(-2) + "/" + book.pdfFile.split("/").at(-1);
+        await deleteFromCloudinary(pdffilePublicId, "raw");
+
         const pdfFileName = files.pdfFile[0].filename;
         const pdfFilePath = path.resolve(
           __dirname,
@@ -201,5 +224,115 @@ const postUpdateBook = async (
     return next(createHttpError(500, "Error occured at server"));
   }
 };
+const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
+  const pageNumber = parseInt(req.query.page as string) || 1;
+  const NoOfbooksPerPage = 1;
 
-export { postCreateBook, postUpdateBook };
+  Book.find()
+    .populate("author", "name email")
+    .skip((pageNumber - 1) * NoOfbooksPerPage)
+    .limit(NoOfbooksPerPage)
+    .then((books) => {
+      if (!books) {
+        return next(createHttpError(404, "No Books Found"));
+      }
+      res
+        .status(200)
+        .json({ message: "Books Fetched Sucesfully ", books: books });
+    })
+    .catch((error) => {
+      return next(
+        createHttpError(500, "Error occured at server while fetching books")
+      );
+    });
+};
+
+const getBookById = async (req: Request, res: Response, next: NextFunction) => {
+  const bookId = req.params.bookId;
+
+  // Validate ObjectId format
+  if (!mongoose.Types.ObjectId.isValid(bookId)) {
+    return next(createHttpError(404, "Book Not Found"));
+  }
+
+  try {
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return next(createHttpError(404, "Book Not Found"));
+    }
+    res.status(200).json({ message: "Book Fetched Successfully", book });
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return next(createHttpError(404, "Book Not Found"));
+    }
+    return next(
+      createHttpError(500, "Error occurred at server while fetching book")
+    );
+  }
+};
+
+const deletebook = (req: Request, res: Response, next: NextFunction) => {
+  const bookId = req.params.bookId;
+  const _req = req as AuthRequest;
+
+  Book.findById(bookId)
+    .then(async (book) => {
+      if (!book) {
+        return next(createHttpError(404, "Book Not Found"));
+      }
+      if (book.author._id.toString() !== _req.userId) {
+        return next(
+          createHttpError(
+            403,
+            "You are not the author of this book cant delete"
+          )
+        );
+      }
+      //delete from cloudinary
+      //coverImages/gkvcc0seniouvqxtivij  ===>cloudinary public Id for cover image
+      //booksPdf/blqwbcb0um0zvfjwm7gi.pdf ===>cloudinary public Id for pdf file
+      //https://res.cloudinary.com/djnqejhoj/image/upload/v1723125822/coverImages/gkvcc0seniouvqxtivij.png ==>coverImage
+      //https://res.cloudinary.com/djnqejhoj/raw/upload/v1723125824/booksPdf/ujlh6nfgvh6zko1lwbhv.pdf  ==>pdfFile
+      const coverImagePublicId =
+        book.coverImage.split("/").at(-2) +
+        "/" +
+        book.coverImage.split("/").at(-1)?.split(".").at(0);
+      const pdffilePublicId =
+        book.pdfFile.split("/").at(-2) + "/" + book.pdfFile.split("/").at(-1);
+      console.log("CoverImage Public id ", coverImagePublicId);
+      console.log("pdfFile Public id ", pdffilePublicId);
+      // Promise.all([deleteFromCloudinary(coverImagePublicId,"image"),deleteFromCloudinary(pdffilePublicId,"raw")]);
+      try {
+        await deleteFromCloudinary(coverImagePublicId, "image");
+        await deleteFromCloudinary(pdffilePublicId, "raw");
+      } catch (error) {
+        return next(
+          createHttpError(500, "Error occured at server while deleting book")
+        );
+      }
+
+      Book.deleteOne({ _id: bookId })
+        .then((result) => {
+          console.log(result);
+          res.status(200).json({ message: "Book Deleted Successfully" });
+        })
+        .catch((error) => {
+          return next(
+            createHttpError(
+              500,
+              "Error occurred at server while deleting Book Images"
+            )
+          );
+        });
+    })
+
+    .catch((error) => {
+      if (error instanceof mongoose.Error.CastError) {
+        return next(createHttpError(404, "Book Not Found"));
+      }
+      return next(
+        createHttpError(500, "Error occurred at server while fetching book")
+      );
+    });
+};
+export { postCreateBook, postUpdateBook, getAllBooks, getBookById, deletebook };
