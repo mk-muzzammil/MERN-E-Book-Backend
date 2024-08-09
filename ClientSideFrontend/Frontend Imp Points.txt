@@ -1,0 +1,6 @@
+So we wil make a new project of next by command npx create-next-app@latest After we will practise some of techniques how basically make routes in next app as i know when we make folders in app folder that will be our new routr and in the folder page.tsx file will be made which will be rendered when that route will be triggered 
+==>so after this we will talk about static navbar that must be available in allpages so for this we wil make component of navbar outside app and then import it in the layout.tsx and then use before children so it will be in each page
+
+==>After this we will make out navBar with icond used of fontawesome so install it with 
+npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+and after it use it in our component
