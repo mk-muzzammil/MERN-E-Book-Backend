@@ -7,7 +7,7 @@ const BookCard = ({ book }: { book: Book }) => {
   return (
     <>
       <div className="flex gap-3  border-2 p-2 shadow-md w-[410px] rounded-xl ">
-        <div className="border-2 border-red-500  ">
+        <div>
           <Image
             src={book.coverImage}
             alt={book.title}

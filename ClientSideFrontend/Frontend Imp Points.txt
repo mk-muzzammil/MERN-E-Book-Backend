@@ -5,3 +5,15 @@ So we wil make a new project of next by command npx create-next-app@latest After
 npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
 and after it use it in our component so after this i have created my navBar and  also banner for my frontend
 ===>Here comes twist there are 2 types of components in nextjs client and server:server components are processed or renderd on nextjs server and after processing and fetching of data from api the html will be sent to the client component which wil be rendered on client side by default all components are server we can make it client comp by append use client to the top 
+   
+Also ver imp when we are working with dynamic routes in next js in this case we will use [] bracket to name of folder to make it dynamic and we can get the dynamic id from params and name must be name of folder but first recieve it as a prop in function
+
+==> also Very imp in usage of client and server comp data fetching must be done in server comp and ui related logic like use of hooks like usestate,useEffect etc will be done in client component and also event handlers must also be related to client components bcz it is concerned with browser (Ui) so very imp to differ in it visit documentation for it  
+
+==>Also learn a great concept is baically use of <suspense> comp from react it will used for a case let say we make a call to fetch from api so other comp will also wait to be render bcz of this fetch if we want to render static data first and dynamic data after that we will use this component suspense will render the dynamic comp later and dont affect the other comp to render this will be implemented in fetch calls for books 
+
+
+
+==>Afte this i will learn about cache very powerful feature in next js and very imp y default it is enabled and next js used it 
+nextjs use 3 types of cache 1 at client side and 3 at server side Router cache will be at client side which will store the route in cache for later quick response and after it comes Route (RSC and HTML payload) this cache basically stores the js which will basically tells us what will be in our html and what data changes in that html ,So after it data cahce comes this may cause so many problems this basically cache our data fetched form external api and when req will be done on same route it will return data from cache not from server  which may cause prob in dynamic data case which cahnges frequently and we ca opt out(get rid) from this by cahce:"no-store" after this line in fetch every req will be done to server data cahce skipped And Request memoization is basicaly solution of prop drilling if we do 4 same req then doe to this cache only one req will be done other 3 will get data from it.
+After it comes different ways to use cahcing one is disable it if you dont want to use it and secondly time base cahce handling it will cache for a time after that time req will be done to server to get updated data for this {revalidate:3600(3600 seconds=1 hour)}
