@@ -63,6 +63,7 @@ const loginUser = (req: Request, res: Response, next: NextFunction) => {
   }
   //database process
   const { email, password } = req.body;
+  console.log("After frontend req", { email, password });
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {

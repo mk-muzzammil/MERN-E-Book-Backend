@@ -10,9 +10,14 @@ app.use(express.json());
 app.use(
   cors({
     origin: config.FRONTEND_URL,
-    credentials: true,
   })
 );
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+//   next();
+// });
 app.get("/", (req, res, next) => {
   res.json({ message: "Hello This is E book store" });
 });
