@@ -30,7 +30,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, Outlet, Navigate } from "react-router-dom";
 import useTokenStore from "@/zustandStore";
 const DashboardLayout = () => {
-  const token = useTokenStore.getState().token;
+  const { token, setToken } = useTokenStore((state) => state);
+  const hanldeLogOut = () => {
+    console.log("logging out");
+    setToken("");
+  };
 
   if (!token) {
     return <Navigate to={"/auth/login"} replace />;
@@ -168,7 +172,11 @@ const DashboardLayout = () => {
               {/* <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator /> */}
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button onClick={hanldeLogOut} variant={"link"}>
+                  Logout
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
