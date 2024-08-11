@@ -14,6 +14,7 @@ import { logUser } from "@/types/index";
 import { useMutation } from "@tanstack/react-query";
 import { loginApi } from "@/http/login";
 import { useNavigate } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
 export function LoginPage() {
   const navigate = useNavigate();
   const {
@@ -88,8 +89,13 @@ export function LoginPage() {
                 </p>
               )}
             </div>
-            <Button type="submit" className="w-full">
-              Login
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending && <LoaderCircle className="animate-spin" />}
+              <span className="ml-2">Login</span>
             </Button>
             {/* <Button variant="outline" className="w-full">
               Login with Google
