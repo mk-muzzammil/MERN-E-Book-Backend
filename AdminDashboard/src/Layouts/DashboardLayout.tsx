@@ -7,6 +7,7 @@ import {
   Menu,
   Package2,
   Search,
+  ListFilter,
 } from "lucide-react";
 // import { Badge } from "@/components/ui/badge";
 
@@ -25,6 +26,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import {
   Breadcrumb,
@@ -33,20 +35,32 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Link, Outlet, Navigate, NavLink } from "react-router-dom";
+import { Link, Outlet, Navigate, NavLink, useLocation } from "react-router-dom";
 import useTokenStore from "@/zustandStore";
-import { useState } from "react";
 const DashboardLayout = () => {
-  const [addBtnClick, setAddBtnClick] = useState(false);
+  const location = useLocation();
+
   const { token, setToken } = useTokenStore((state) => state);
   const hanldeLogOut = () => {
     console.log("logging out");
     setToken("");
   };
-  const handleAddBtnClicked = () => {
-    setAddBtnClick(true);
+
+  const getBreadcrumbs = () => {
+    const breadcrumbs = [
+      { path: "/home", label: "Home" },
+      ...(location.pathname.includes("/books")
+        ? [{ path: "/books", label: "Books" }]
+        : []),
+      ...(location.pathname.includes("/create_book")
+        ? [{ path: "/create_book", label: "Create Book" }]
+        : []),
+    ];
+
+    return breadcrumbs;
   };
 
   if (!token) {
@@ -137,21 +151,29 @@ const DashboardLayout = () => {
 
                   <span className="sr-only">Coders Book</span>
                 </Link>
-                <Link
-                  to="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                <NavLink
+                  to="/home"
+                  className={({ isActive }) => {
+                    return `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
+                      isActive && "bg-accent"
+                    }`;
+                  }}
                 >
                   <Home className="h-5 w-5" />
                   Home
-                </Link>
+                </NavLink>
 
-                <Link
-                  to="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                <NavLink
+                  to="/books"
+                  className={({ isActive }) => {
+                    return `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
+                      isActive && "bg-accent"
+                    }`;
+                  }}
                 >
                   <Book className="h-5 w-5" />
                   Books
-                </Link>
+                </NavLink>
               </nav>
               <div className="mt-auto">
                 <Card>
@@ -172,64 +194,87 @@ const DashboardLayout = () => {
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                />
-              </div>
-            </form>
+            {location.pathname.includes("/books") && (
+              <form>
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search products..."
+                    className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+                  />
+                </div>
+              </form>
+            )}
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {/* <DropdownMenuItem>Settings</DropdownMenuItem>
+          <div className="flex items-center gap-4">
+            {location.pathname.includes("/books") && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 gap-1">
+                    <ListFilter className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                      Filter
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem checked>
+                    Active
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <CircleUser className="h-5 w-5" />
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {/* <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator /> */}
-              <DropdownMenuItem>
-                <Button onClick={hanldeLogOut} variant={"link"}>
-                  Logout
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuItem>
+                  <Button onClick={hanldeLogOut} variant={"link"}>
+                    Logout
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <div className="flex items-center justify-between">
             <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link to="/home">Home</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link to="/books">Books</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                {addBtnClick && (
-                  <>
-                    <BreadcrumbSeparator />{" "}
-                    <BreadcrumbItem>Create Book</BreadcrumbItem>{" "}
-                  </>
-                )}
+                {getBreadcrumbs().map((breadcrumb, index) => (
+                  <React.Fragment key={index}>
+                    {index > 0 && <BreadcrumbSeparator />}
+                    <BreadcrumbItem>
+                      <BreadcrumbLink asChild>
+                        <Link to={breadcrumb.path}>{breadcrumb.label}</Link>
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                  </React.Fragment>
+                ))}
               </BreadcrumbList>
             </Breadcrumb>
 
             <Link to={"/books/create_book"}>
-              <Button onClick={handleAddBtnClicked}>
+              <Button>
                 <CirclePlus className="h-6 w-6  " />{" "}
                 <span className="ml-2 ">Add Book</span>
               </Button>
