@@ -11,14 +11,29 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { logUser } from "@/types/index";
+import { useMutation } from "@tanstack/react-query";
+import { loginApi } from "@/http/login";
+import { useNavigate } from "react-router-dom";
 export function LoginPage() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<logUser>();
+  const mutation = useMutation({
+    mutationFn: loginApi,
+    onSuccess: () => {
+      console.log("Login Succesfull");
+      //After successful login redirect to the home page
+      navigate("/home");
+    },
+  });
   const onSubmit = async (data: logUser) => {
-    console.log("Form daata:", data);
+    const email = data.email;
+    const password = data.password;
+    // this is basically the same as the fetch request in the previous example making server call with the help of axios instance
+    mutation.mutate({ email, password });
   };
   return (
     <div className="flex justify-center items-center h-screen">
