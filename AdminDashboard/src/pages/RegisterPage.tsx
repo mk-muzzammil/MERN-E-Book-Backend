@@ -13,6 +13,7 @@ import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerApi } from "@/http/api";
 import { LoaderPinwheelIcon } from "lucide-react";
+import useTokenStore from "@/zustandStore";
 
 //here i am using simple way to get data from fields i will use react-form  to get data in login page
 const RegisterPage = () => {
@@ -20,10 +21,13 @@ const RegisterPage = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const setToken = useTokenStore((state) => state.setToken);
   const mutation = useMutation({
     mutationFn: registerApi,
     onSuccess: (response) => {
       console.log("Registered Succesfully", response);
+      setToken(response.data.accesToken);
+
       navigate("/auth/login");
     },
   });
