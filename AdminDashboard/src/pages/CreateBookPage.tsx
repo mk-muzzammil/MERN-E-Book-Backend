@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useMutation } from "@tanstack/react-query";
 import { createBookApi } from "@/http/api";
 import { useNavigate } from "react-router-dom";
+import { QueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -35,11 +36,13 @@ const formSchema = z.object({
 });
 
 const CreateBookPage = () => {
+  const queryClient = new QueryClient();
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: createBookApi,
     onSuccess: (response) => {
       console.log("Book created successfully", response);
+      queryClient.invalidateQueries({ queryKey: ["books"] });
       navigate("/books");
     },
   });
