@@ -7,6 +7,8 @@ import {
   getAllBooks,
   getBookById,
   deletebook,
+  getGenres,
+  getBooksByGenre,
 } from "./bookController";
 import multer from "multer";
 import tokenVerification from "../middlewares/tokenVerification";
@@ -41,6 +43,8 @@ bookRouter.patch(
   postUpdateBook
 );
 bookRouter.get("/", getAllBooks);
+bookRouter.get("/genres", getGenres);
+bookRouter.get("/:genre", getBooksByGenre);
 bookRouter.get("/:bookId", getBookById);
 bookRouter.delete("/:bookId", tokenVerification, deletebook);
 

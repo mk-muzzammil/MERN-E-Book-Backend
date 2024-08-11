@@ -347,4 +347,56 @@ const deletebook = (req: Request, res: Response, next: NextFunction) => {
       );
     });
 };
-export { postCreateBook, postUpdateBook, getAllBooks, getBookById, deletebook };
+
+//====================================Fetch Genres of All books for filter ========================================
+const getGenres = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const genres = await Book.find().distinct("genre");
+    console.log(genres);
+    if (!genres) {
+      res.status(200).json({ message: "No Genre Available", genres: genres });
+    }
+    res
+      .status(200)
+      .json({ message: "Genres Fetched Succesfully ", genres: genres });
+  } catch (error) {
+    return next(
+      createHttpError(500, "Error occured at server while fetching genres")
+    );
+  }
+};
+//====================================Fetch Genre Based Books for filter ========================================
+const getBooksByGenre = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const genre = req.params.genre;
+    const booksByGenre = await Book.find({ genre: genre });
+    console.log(booksByGenre);
+    if (!booksByGenre) {
+      res.status(200).json({ message: "No Books Found with this Genre" });
+    }
+    res.status(200).json({
+      message: "Books Fetched Succesfully ",
+      booksByGenre: booksByGenre,
+    });
+  } catch (error) {
+    return next(
+      createHttpError(
+        500,
+        "Error occured at server while fetching books by genre"
+      )
+    );
+  }
+};
+export {
+  postCreateBook,
+  postUpdateBook,
+  getAllBooks,
+  getBookById,
+  deletebook,
+  getGenres,
+  getBooksByGenre,
+};
