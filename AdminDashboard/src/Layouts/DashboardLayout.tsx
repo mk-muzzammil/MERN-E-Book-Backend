@@ -33,7 +33,7 @@ const DashboardLayout = () => {
   const token = useTokenStore.getState().token;
 
   if (!token) {
-    <Navigate to={"/auth/login"} replace />;
+    return <Navigate to={"/auth/login"} replace />;
   }
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
