@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { logUser } from "@/types/index";
 import { useMutation } from "@tanstack/react-query";
-import { loginApi } from "@/http/login";
+import { loginApi } from "@/http/api";
 import { useNavigate } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
 export function LoginPage() {

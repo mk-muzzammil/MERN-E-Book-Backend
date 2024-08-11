@@ -11,4 +11,9 @@ const api = axios.create({
 const loginApi = async (data: { email: string; password: string }) =>
   await api.post("/users/login", data);
 
-export { loginApi };
+const registerApi = async (data: {
+  name: string;
+  email: string;
+  password: string;
+}) => await api.post("/users/register", data);
+export { loginApi, registerApi };
