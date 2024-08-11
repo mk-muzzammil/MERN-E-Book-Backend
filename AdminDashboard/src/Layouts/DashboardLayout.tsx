@@ -1,6 +1,7 @@
 import {
   Bell,
   Book,
+  CirclePlus,
   CircleUser,
   Home,
   Menu,
@@ -25,15 +26,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, Outlet, Navigate } from "react-router-dom";
 import useTokenStore from "@/zustandStore";
+import { useState } from "react";
 const DashboardLayout = () => {
+  const [addBtnClick, setAddBtnClick] = useState(false);
   const { token, setToken } = useTokenStore((state) => state);
   const hanldeLogOut = () => {
     console.log("logging out");
     setToken("");
+  };
+  const handleAddBtnClicked = () => {
+    setAddBtnClick(true);
   };
 
   if (!token) {
@@ -181,6 +194,37 @@ const DashboardLayout = () => {
           </DropdownMenu>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+          <div className="flex items-center justify-between">
+            <Breadcrumb className="hidden md:flex">
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link to="/home">Home</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link to="/books">Books</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {addBtnClick && (
+                  <>
+                    <BreadcrumbSeparator />{" "}
+                    <BreadcrumbItem>Create Book</BreadcrumbItem>{" "}
+                  </>
+                )}
+              </BreadcrumbList>
+            </Breadcrumb>
+
+            <Link to={"/books/create_book"}>
+              <Button onClick={handleAddBtnClicked}>
+                <CirclePlus className="h-6 w-6  " />{" "}
+                <span className="ml-2 ">Add Book</span>
+              </Button>
+            </Link>
+          </div>
+
           <Outlet />
         </main>
       </div>
