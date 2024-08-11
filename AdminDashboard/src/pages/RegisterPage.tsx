@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerApi } from "@/http/api";
+import { LoaderPinwheelIcon } from "lucide-react";
 
 //here i am using simple way to get data from fields i will use react-form  to get data in login page
 const RegisterPage = () => {
@@ -43,7 +44,12 @@ const RegisterPage = () => {
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
           <CardDescription>
-            Enter your information to create an account
+            Enter your information to create an account <br />
+            {mutation.error?.response?.data?.message && (
+              <p className="text-red-500 text-sm">
+                {mutation.error.response.data.message}
+              </p>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -70,8 +76,10 @@ const RegisterPage = () => {
               type="submit"
               className="w-full"
               onClick={handleRegisterBtn}
+              disabled={mutation.isPending}
             >
-              Create an account
+              {mutation.isPending && <LoaderPinwheelIcon />}
+              <span className="ml-3">Create an account</span>
             </Button>
             {/* <Link to={"http://www.github.com/login"}>
               <Button variant="outline" className="w-full">
