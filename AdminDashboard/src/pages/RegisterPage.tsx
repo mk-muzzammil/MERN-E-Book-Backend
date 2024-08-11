@@ -22,8 +22,8 @@ const RegisterPage = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const mutation = useMutation({
     mutationFn: registerApi,
-    onSuccess: () => {
-      console.log("Registered Succesfully");
+    onSuccess: (response) => {
+      console.log("Registered Succesfully", response);
       navigate("/auth/login");
     },
   });

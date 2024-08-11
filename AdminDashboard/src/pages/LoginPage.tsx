@@ -15,6 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { loginApi } from "@/http/api";
 import { useNavigate } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
+import useTokenStore from "@/zustandStore";
 export function LoginPage() {
   const navigate = useNavigate();
   const {
@@ -24,9 +25,11 @@ export function LoginPage() {
   } = useForm<logUser>();
   const mutation = useMutation({
     mutationFn: loginApi,
-    onSuccess: () => {
-      console.log("Login Succesfull");
-      //After successful login redirect to the home page
+    onSuccess: (response) => {
+      console.log("Login Succesfull", response);
+      //after successful login we will store the token in zustand store for later use
+      useTokenStore.getState().setToken(response.data.accesToken);
+      console.log("Token", useTokenStore.getState().token);
       navigate("/home");
     },
   });
