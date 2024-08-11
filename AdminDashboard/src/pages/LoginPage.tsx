@@ -42,7 +42,10 @@ export function LoginPage() {
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your email below to login to your account <br />{" "}
+            {mutation.isError && (
+              <p className="text-red-500 text-sm">{mutation.error.message}</p>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -62,7 +65,7 @@ export function LoginPage() {
                 })}
               />
               {errors.email && (
-                <p className="text-red-500 text-xl">{errors.email.message}</p>
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
               )}
             </div>
             <div className="grid gap-2">
@@ -84,7 +87,7 @@ export function LoginPage() {
                 })}
               />
               {errors.password && (
-                <p className="text-red-500 text-xl">
+                <p className="text-red-500 text-sm">
                   {errors.password.message}
                 </p>
               )}
