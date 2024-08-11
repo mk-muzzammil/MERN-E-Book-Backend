@@ -24,9 +24,18 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal } from "lucide-react";
 import { Book } from "@/types";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const BooksPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +60,24 @@ const BooksPage = () => {
 
   return (
     <>
-      <div></div>
+      <div>
+        <Breadcrumb className="hidden md:flex">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/home">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/books">Books</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Button>Add Book</Button>
+      </div>
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
           <CardTitle>Books</CardTitle>
