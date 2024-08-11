@@ -18,6 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createBookApi } from "@/http/api";
 import { useNavigate } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
+import { Loader2Icon } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -168,8 +169,9 @@ const CreateBookPage = () => {
         />
 
         <div className="flex items-center gap-4">
-          <Button type="submit" className="px-8">
-            Submit
+          <Button type="submit" className="px-8" disabled={mutation.isPending}>
+            {mutation.isPending && <Loader2Icon className="animate-spin" />}
+            <span className="ml-2">Submit</span>
           </Button>
           <Button type="reset" onClick={onReset} className="px-8">
             Reset
