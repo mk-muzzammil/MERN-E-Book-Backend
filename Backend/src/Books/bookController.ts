@@ -8,6 +8,7 @@ import fs from "fs";
 import { AuthRequest } from "../middlewares/tokenVerification";
 import mongoose from "mongoose";
 import { promises } from "dns";
+import { config } from "../config/config";
 
 const uploadToCloudinary = (
   FolderName: string,
@@ -227,25 +228,35 @@ const postUpdateBook = async (
 };
 const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
   const pageNumber = parseInt(req.query.page as string) || 1;
-  const NoOfbooksPerPage = 7;
-
+  const NoOfbooksPerPage = parseInt(req.query.limit as string) || 5;
+  let totalBooks: number;
   Book.find()
-    .populate("author", "name")
-    .skip((pageNumber - 1) * NoOfbooksPerPage)
-    .limit(NoOfbooksPerPage)
-    .then((books) => {
-      if (!books) {
-        return next(createHttpError(404, "No Books Found"));
-      }
-      res
-        .status(200)
-        .json({ message: "Books Fetched Sucesfully ", books: books });
-    })
-    .catch((error) => {
-      return next(
-        createHttpError(500, "Error occured at server while fetching books")
-      );
+    .countDocuments()
+    .then((count) => {
+      totalBooks = count;
     });
+  if (NoOfbooksPerPage) {
+    Book.find()
+      .populate("author", "name")
+      .skip((pageNumber - 1) * NoOfbooksPerPage)
+      .limit(NoOfbooksPerPage)
+      .then((books) => {
+        if (!books) {
+          return next(createHttpError(404, "No Books Found"));
+        }
+        res.status(200).json({
+          message: "Books Fetched Sucesfully ",
+          books: books,
+          totalBooks: totalBooks,
+          booksPerPage: NoOfbooksPerPage,
+        });
+      })
+      .catch((error) => {
+        return next(
+          createHttpError(500, "Error occured at server while fetching books")
+        );
+      });
+  }
 };
 
 const getBookById = async (req: Request, res: Response, next: NextFunction) => {

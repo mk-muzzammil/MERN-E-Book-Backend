@@ -16,4 +16,7 @@ const registerApi = async (data: {
   email: string;
   password: string;
 }) => await api.post("/users/register", data);
-export { loginApi, registerApi };
+
+const fetchBookList = async (page: number = 1, limit: number = 5) =>
+  await api.get(`/books?page=${page}&limit=${limit}`);
+export { loginApi, registerApi, fetchBookList };

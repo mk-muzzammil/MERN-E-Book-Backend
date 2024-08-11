@@ -11,6 +11,7 @@ const _config = {
   Cloudinary_api_secret: process.env.Cloudinary_api_secret,
   Cloudinary_Cloud_Name: process.env.Cloudinary_Cloud_Name,
   FRONTEND_URL: process.env.FRONTEND_URL,
+  NOOFBOOKSPERPAGE: process.env.NOOFBOOKSPERPAGE,
   // JWT_SECRET:process.env.JWT_SECRET,
   // JWT_EXPIRE:process.env.JWT_EXPIRE,
   // JWT_COOKIE_EXPIRE:process.env.JWT_COOKIE_EXPIRE
