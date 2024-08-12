@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { loginApi } from "@/http/api";
 import { useNavigate } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
-import useTokenStore from "@/zustandStore";
+import { useTokenStore } from "@/zustandStore";
 export function LoginPage() {
   const navigate = useNavigate();
   const {
@@ -103,10 +103,12 @@ export function LoginPage() {
               {mutation.isPending && <LoaderCircle className="animate-spin" />}
               <span className="ml-2">Login</span>
             </Button>
-            {/* <Button variant="outline" className="w-full">
-              Login with Google
-            </Button> */}
           </form>
+          {/* <Link to={"http://localhost:8080/auth/google"}>
+            <Button variant="outline" className="w-full">
+              Login with Google
+            </Button>
+          </Link> */}
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link to={"/auth/register"} className="underline">

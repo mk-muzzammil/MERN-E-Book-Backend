@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import useTokenStore from "@/zustandStore";
+import { useTokenStore } from "@/zustandStore";
 const AuthLayout = () => {
   const token = useTokenStore.getState().token;
   if (token) {

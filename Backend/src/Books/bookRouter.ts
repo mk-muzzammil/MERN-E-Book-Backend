@@ -18,7 +18,6 @@ const uploadMulter = multer({
   dest: path.resolve(__dirname, "../../public/data/Uploads"),
   limits: { fileSize: 3e7 }, //3e7 ==>30mb
 });
-const pageNumber = 1;
 
 bookRouter.post(
   "/create-book",
@@ -42,10 +41,10 @@ bookRouter.patch(
 
   postUpdateBook
 );
-bookRouter.get("/", getAllBooks);
+bookRouter.get("/", tokenVerification, getAllBooks);
 bookRouter.get("/genres", getGenres);
-bookRouter.get("/:genre", getBooksByGenre);
 bookRouter.get("/:bookId", getBookById);
+bookRouter.get("/genres/:genre", getBooksByGenre);
 bookRouter.delete("/:bookId", tokenVerification, deletebook);
 
 export default bookRouter;

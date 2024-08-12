@@ -1,6 +1,11 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchBookList } from "@/http/api";
+import React, { useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  deleteBookApi,
+  EditBookApi,
+  fetchBookList,
+  getSingleBook,
+} from "@/http/api";
 import {
   Table,
   TableBody,
@@ -28,22 +33,47 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Loader, MoreHorizontal } from "lucide-react";
 import { Book } from "@/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
+import { useMutation } from "@tanstack/react-query";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 const BooksPage = () => {
+  const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useState(1);
+  // const queryParams = new URLSearchParams(location.search);
+  // const genreFilter = queryParams.get("genre");
 
-  const {
-    data: booksData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["books", currentPage],
+  const { data: booksData, isLoading } = useQuery({
+    queryKey: ["books", "genres", currentPage],
     queryFn: () => fetchBookList(currentPage, 5),
-    staleTime: 60000, // 1 minute time given in ms
+    // staleTime: 60000, // 1 minute time given in ms
   });
-
+  const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: deleteBookApi,
+    onSuccess: (response) => {
+      console.log("Book Deleted Successfully", response);
+      // Invalidate and refetch the books data after deletion
+      queryClient.invalidateQueries({
+        queryKey: ["books", "genres", currentPage],
+      });
+    },
+  });
+  const mutationEdit = useMutation({
+    mutationFn: getSingleBook,
+    onSuccess: (response) => {
+      console.log("Book Fetched Successfully", response.data);
+      navigate(`/books/edit_book`, {
+        state: { book: response.data },
+      });
+    },
+  });
   const totalPages = Math.ceil(
     (booksData?.data?.totalBooks || 0) / (booksData?.data?.booksPerPage || 1)
   );
@@ -51,6 +81,19 @@ const BooksPage = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+  const hanldeEditAction = (_id: string) => {
+    mutationEdit.mutate(_id);
+  };
+  const hanldeDeleteAction = (_id: string) => {
+    mutation.mutate(_id);
+    console.log("Delete", _id);
+  };
+  // const filteredBooks = useMemo(() => {
+  //   if (!genreFilter) return booksData?.data?.books || [];
+  //   return booksData?.data?.books.filter(
+  //     (book: Book) => book.genre.toLowerCase() === genreFilter.toLowerCase()
+  //   );
+  // }, [booksData, genreFilter]);
 
   return (
     <>
@@ -105,8 +148,33 @@ const BooksPage = () => {
                       <TableCell className="hidden md:table-cell">
                         {book.createdAt}
                       </TableCell>
+
                       <TableCell>
-                        <MoreHorizontal />
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              aria-haspopup="true"
+                              size="icon"
+                              variant="ghost"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Toggle menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                              onClick={() => hanldeEditAction(book._id)}
+                            >
+                              Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => hanldeDeleteAction(book._id)}
+                            >
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}

@@ -7,9 +7,9 @@ export default async function Home() {
   return (
     <>
       <Banner />
-      <Suspense fallback={<Loader />}>
-        <BookList />
-      </Suspense>
+      {/* <Suspense fallback={<Loader />}> */}
+      <BookList />
+      {/* </Suspense> */}
     </>
   );
 }

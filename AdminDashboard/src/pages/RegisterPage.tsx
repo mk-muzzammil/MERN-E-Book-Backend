@@ -13,7 +13,7 @@ import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerApi } from "@/http/api";
 import { LoaderPinwheelIcon } from "lucide-react";
-import useTokenStore from "@/zustandStore";
+import { useTokenStore } from "@/zustandStore";
 
 //here i am using simple way to get data from fields i will use react-form  to get data in login page
 const RegisterPage = () => {

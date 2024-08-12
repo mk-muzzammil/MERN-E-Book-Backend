@@ -226,36 +226,34 @@ const postUpdateBook = async (
     return next(createHttpError(500, "Error occured at server"));
   }
 };
-const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
+const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
   const pageNumber = parseInt(req.query.page as string) || 1;
   const NoOfbooksPerPage = parseInt(req.query.limit as string) || 5;
-  let totalBooks: number;
-  Book.find()
-    .countDocuments()
-    .then((count) => {
-      totalBooks = count;
-    });
-  if (NoOfbooksPerPage) {
-    Book.find()
+  const _req = req as AuthRequest;
+  const userId = _req.userId;
+
+  try {
+    const totalBooks = await Book.countDocuments({ author: userId });
+
+    const books = await Book.find({ author: userId })
       .populate("author", "name")
       .skip((pageNumber - 1) * NoOfbooksPerPage)
-      .limit(NoOfbooksPerPage)
-      .then((books) => {
-        if (!books) {
-          return next(createHttpError(404, "No Books Found"));
-        }
-        res.status(200).json({
-          message: "Books Fetched Sucesfully ",
-          books: books,
-          totalBooks: totalBooks,
-          booksPerPage: NoOfbooksPerPage,
-        });
-      })
-      .catch((error) => {
-        return next(
-          createHttpError(500, "Error occured at server while fetching books")
-        );
-      });
+      .limit(NoOfbooksPerPage);
+
+    if (!books || books.length === 0) {
+      return res.status(200).json({ message: "No Books Available" });
+    }
+
+    res.status(200).json({
+      message: "Books Fetched Successfully",
+      books: books,
+      totalBooks: totalBooks,
+      booksPerPage: NoOfbooksPerPage,
+    });
+  } catch (error) {
+    return next(
+      createHttpError(500, "Error occurred at server while fetching books")
+    );
   }
 };
 

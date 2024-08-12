@@ -13,5 +13,8 @@ const useTokenStore = create<ZustandStoretype>()(
     )
   )
 );
-
-export default useTokenStore;
+// const useGenreStore = create<ZuStandGenreStoretype>((set) => ({
+//   selectedGenre: "",
+//   setSelectedGenre: (genre) => set({ selectedGenre: genre }),
+// }));
+export { useTokenStore };

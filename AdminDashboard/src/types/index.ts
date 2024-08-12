@@ -11,6 +11,10 @@ export interface ZustandStoretype {
   token: string;
   setToken: (data: string) => void;
 }
+export interface ZuStandGenreStoretype {
+  selectedGenre: string;
+  setSelectedGenre: (data: string) => void;
+}
 export interface Author {
   _id: string;
   name: string;

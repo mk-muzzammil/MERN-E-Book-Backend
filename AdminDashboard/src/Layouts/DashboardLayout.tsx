@@ -8,6 +8,7 @@ import {
   Package2,
   Search,
   ListFilter,
+  Loader,
 } from "lucide-react";
 // import { Badge } from "@/components/ui/badge";
 
@@ -35,12 +36,34 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Link, Outlet, Navigate, NavLink, useLocation } from "react-router-dom";
-import useTokenStore from "@/zustandStore";
+import {
+  Link,
+  Outlet,
+  Navigate,
+  NavLink,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { useTokenStore } from "@/zustandStore";
+import { useQuery } from "@tanstack/react-query";
+import { fetchGenreList } from "@/http/api";
+
 const DashboardLayout = () => {
+  const navigate = useNavigate();
+  const [selectedGenre, setSelectedGenre] = useState<string>("");
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["genres"],
+    queryFn: fetchGenreList,
+  });
+
+  const handleSelectedGenre = (genre: string) => {
+    setSelectedGenre(genre);
+    navigate(`/books?genre=${genre}`);
+  };
   const location = useLocation();
 
   const { token, setToken } = useTokenStore((state) => state);
@@ -57,6 +80,9 @@ const DashboardLayout = () => {
         : []),
       ...(location.pathname.includes("/create_book")
         ? [{ path: "/create_book", label: "Create Book" }]
+        : []),
+      ...(location.pathname.includes("/edit_book")
+        ? [{ path: "/edit_book", label: "Edit Book" }]
         : []),
     ];
 
@@ -221,11 +247,22 @@ const DashboardLayout = () => {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Filter by</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem checked>
-                    Active
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+                  {isLoading ? (
+                    <Loader className="animate-spin" />
+                  ) : data?.data?.genres.length > 0 ? (
+                    data?.data?.genres?.map((genre: string) => (
+                      <DropdownMenuCheckboxItem
+                        key={genre}
+                        onClick={() => handleSelectedGenre(genre)}
+                      >
+                        {genre}
+                      </DropdownMenuCheckboxItem>
+                    ))
+                  ) : (
+                    <DropdownMenuCheckboxItem>
+                      No Genre Found
+                    </DropdownMenuCheckboxItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             )}

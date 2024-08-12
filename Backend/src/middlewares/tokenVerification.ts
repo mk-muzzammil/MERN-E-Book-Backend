@@ -18,7 +18,9 @@ const tokenVerification = (req: Request, res: Response, next: NextFunction) => {
     const payload = verify(token, config.JSON_WEB_TOKEN_SECRET as string);
     //add the userID from token to req object for further use
     const _req = req as AuthRequest;
+    console.log("payload", payload);
     _req.userId = payload.sub as string;
+    console.log("req.userId", _req.userId);
     //if token is valid then next()
     next();
   } catch (error) {
