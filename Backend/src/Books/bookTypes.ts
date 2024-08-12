@@ -1,9 +1,12 @@
-import User from "../user/userModel";
-
+export interface Author {
+  _id: string;
+  name: string;
+  email: string;
+}
 export interface Book {
   _id: string;
   title: string;
-  author: User;
+  author: Author;
   genre: string;
   pdfFile: string;
   coverImage: string;
