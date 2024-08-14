@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const BookCard = ({ book }: { book: Book }) => {
+  console.log("Book in book card", book);
   return (
     <>
       <div className="flex gap-3  border-2 p-2 shadow-md w-[410px] rounded-xl ">

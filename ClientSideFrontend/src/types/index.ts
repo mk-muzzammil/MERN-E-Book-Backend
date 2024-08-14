@@ -1,12 +1,13 @@
 export interface Book {
   _id: string;
-  title: string;
-  genre: string;
-  description: string;
-  coverImage: string;
-  pdfFile: string;
-  author: Author;
+  title: string | "no title";
+  genre: string | "no genre";
+  description: string | "no descr";
+  coverImage: string | "no cover";
+  pdfFile: string | "no file";
+  author: Author | "no author";
 }
 export interface Author {
   name: string;
+  _id: string;
 }

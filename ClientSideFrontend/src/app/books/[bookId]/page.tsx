@@ -10,39 +10,48 @@ const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
     const response = await fetch(
       `${process.env.BACKEND_URL}/books/${params.bookId}`,
       {
-        next: {
-          revalidate: 3600,
-        },
         cache: "no-store",
       }
     );
 
     if (!response.ok) {
+      console.log("res", response);
       throw new Error("Error fetching book");
     }
 
     book = await response.json();
     console.log(book);
   } catch (err: any) {
+    console.log(err + "error");
+
     throw new Error("Error fetching book");
   }
 
   if (!book) {
     throw new Error("Book not found");
   }
-
+  console.log(book);
+  const bookData = {
+    title: book.title,
+    authorName: book.author.name,
+    description: book.description,
+    pdfFile: book.pdfFile,
+    coverImage: book.coverImage,
+  };
   return (
     <div className="mx-auto grid max-w-6xl grid-cols-3 gap-10 px-5 py-10">
       <div className="col-span-2 pr-16 text-primary-950">
-        <h2 className="mb-5 text-5xl font-bold leading-[1.1]">{book.title}</h2>
-        <span className="font-semibold">by {book.author.name}</span>
-        <p className="mt-5 text-lg leading-8">{book.description}</p>
-        <DownloadButton fileLink={book.pdfFile} />
+        <h2 className="mb-5 text-5xl font-bold leading-[1.1]">
+          {bookData.title}
+        </h2>
+        <span className="font-semibold">by {bookData.authorName}</span>
+        <p className="mt-5 text-lg leading-8">{bookData.description}</p>
+        <DownloadButton fileLink={bookData.pdfFile} />
       </div>
       <div className="flex justify-end">
         <Image
-          src={book.coverImage}
-          alt={book.title}
+          src={bookData.coverImage}
+          alt={bookData.title}
           className="rounded-md border"
           height={0}
           width={0}

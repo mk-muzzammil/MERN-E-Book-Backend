@@ -256,6 +256,28 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
     );
   }
 };
+const getAllAuthorBooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const books = await Book.find().populate("author", "name");
+
+    if (!books || books.length === 0) {
+      return res.status(200).json({ message: "No Books Available" });
+    }
+
+    res.status(200).json({
+      message: "Books Fetched Successfully",
+      books: books,
+    });
+  } catch (error) {
+    return next(
+      createHttpError(500, "Error occurred at server while fetching books")
+    );
+  }
+};
 
 const getBookById = async (req: Request, res: Response, next: NextFunction) => {
   const bookId = req.params.bookId;
@@ -397,4 +419,5 @@ export {
   deletebook,
   getGenres,
   getBooksByGenre,
+  getAllAuthorBooks,
 };

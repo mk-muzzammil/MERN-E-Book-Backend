@@ -19,17 +19,17 @@ const NavBar = () => {
           </span>
         </div>
         <div className="flex gap-5 items-center border-solid p-1">
-          <button
+          {/* <button
             type="button"
             className="border-primary-500 text-primary-500 h-8 w-20 text-center rounded-lg hover:border-primary-100 hover:bg-primary-100 active:border-primary-200 active:bg-primary-200 font-medium"
           >
             Sign in
-          </button>
+          </button> */}
           <button
             type="button"
-            className="border-primary-500 text-primary-50 h-8 w-20 text-center bg-primary-500 rounded-md hover:bg-primary-600 active:bg-primary-700 font-medium"
+            className="border-primary-500 text-primary-50 h-10 w-24 text-center bg-primary-500 rounded-md hover:bg-primary-600 active:bg-primary-700 font-medium"
           >
-            SignUp
+            View Only
           </button>
         </div>
       </nav>

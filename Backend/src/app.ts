@@ -29,6 +29,7 @@ app.use(
     origin: [config.FRONTEND_URL as string, config.FRONTEND_URL_2 as string],
   })
 );
+
 // passport.serializeUser((user: any, done) => {
 //   done(null, user);
 // });
@@ -60,10 +61,17 @@ app.use(
 //     }
 //   )
 // );
+app.get("/health", (req, res, next) => {
+  res.status(200).json({ message: "Server is properly running" });
+});
+app.get("/", (req, res, next) => {
+  res.status(200).json({ message: "Home is running" });
+});
 
 app.use("/api/users", userRouter);
 app.use("/api/books", bookRouter);
 // app.use("/auth", authRouter);
+
 app.use(GlobalErrorHanlder);
 
 export default app;

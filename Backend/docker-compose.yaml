@@ -1,0 +1,26 @@
+services:
+  mongoDbServer:
+    image: mongo
+    container_name: mongodb-server
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME: muzzammil759
+      - MONGO_INITDB_ROOT_PASSWORD: Muzz@66039870
+    volumes:
+      - ~/mongo/data:/data/db
+    networks:
+      - elib-network
+
+  backendapi:
+    image: muzzammil759/elib-backend:v2
+    container_name: elib-backend-server
+    ports:
+      - "8080:8080"
+    networks:
+      - elib-network
+    depends_on:
+      - mongoDbServer
+    env_file: .env
+
+networks:
+  elib-network:
+    driver: bridge
