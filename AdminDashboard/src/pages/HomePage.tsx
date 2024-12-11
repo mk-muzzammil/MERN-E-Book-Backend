@@ -42,9 +42,9 @@ const HomePage = () => {
                   <BookOpen className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">10,431</div>
+                  <div className="text-2xl font-bold">100</div>
                   <p className="text-xs text-muted-foreground">
-                    +350 books added this month
+                    +50 books added this month
                   </p>
                 </CardContent>
               </Card>
@@ -56,7 +56,7 @@ const HomePage = () => {
                   <UserPlus className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">+1,250</div>
+                  <div className="text-2xl font-bold">50</div>
                   <p className="text-xs text-muted-foreground">
                     +5.4% from last month
                   </p>
@@ -70,7 +70,7 @@ const HomePage = () => {
                   <Bookmark className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">4,321</div>
+                  <div className="text-2xl font-bold">50</div>
                   <p className="text-xs text-muted-foreground">
                     +15% from last month
                   </p>
@@ -84,9 +84,9 @@ const HomePage = () => {
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">2,734</div>
+                  <div className="text-2xl font-bold">30</div>
                   <p className="text-xs text-muted-foreground">
-                    +120 active in the last hour
+                    +20 active in the last hour
                   </p>
                 </CardContent>
               </Card>
@@ -129,7 +129,7 @@ const HomePage = () => {
                         <TableCell>
                           <div className="font-medium">Liam Johnson</div>
                           <div className="hidden text-sm text-muted-foreground md:inline">
-                            liam@example.com
+                            liam@gmail.com
                           </div>
                         </TableCell>
                         <TableCell className="hidden xl:table-column">
@@ -143,13 +143,13 @@ const HomePage = () => {
                         <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                           2023-08-01
                         </TableCell>
-                        <TableCell className="text-right">$0.00</TableCell>
+                        <TableCell className="text-right">$10.00</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
                           <div className="font-medium">Olivia Smith</div>
                           <div className="hidden text-sm text-muted-foreground md:inline">
-                            olivia@example.com
+                            olivia@gmail.com
                           </div>
                         </TableCell>
                         <TableCell className="hidden xl:table-column">
@@ -165,31 +165,12 @@ const HomePage = () => {
                         </TableCell>
                         <TableCell className="text-right">$5.00</TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Noah Williams</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            noah@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden xl:table-column">
-                          "To Kill a Mockingbird"
-                        </TableCell>
-                        <TableCell className="hidden xl:table-column">
-                          <Badge className="text-xs" variant="outline">
-                            Returned
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                          2023-08-02
-                        </TableCell>
-                        <TableCell className="text-right">$0.00</TableCell>
-                      </TableRow>
+
                       <TableRow>
                         <TableCell>
                           <div className="font-medium">Emma Brown</div>
                           <div className="hidden text-sm text-muted-foreground md:inline">
-                            emma@example.com
+                            emma@gmail.com
                           </div>
                         </TableCell>
                         <TableCell className="hidden xl:table-column">
@@ -203,13 +184,13 @@ const HomePage = () => {
                         <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                           2023-08-03
                         </TableCell>
-                        <TableCell className="text-right">$0.00</TableCell>
+                        <TableCell className="text-right">$10.00</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
                           <div className="font-medium">Sophia Davis</div>
                           <div className="hidden text-sm text-muted-foreground md:inline">
-                            sophia@example.com
+                            sophia@gmail.com
                           </div>
                         </TableCell>
                         <TableCell className="hidden xl:table-column">
@@ -223,7 +204,7 @@ const HomePage = () => {
                         <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                           2023-08-04
                         </TableCell>
-                        <TableCell className="text-right">$0.00</TableCell>
+                        <TableCell className="text-right">$10.00</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -244,7 +225,7 @@ const HomePage = () => {
                         Olivia Martin
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        olivia.martin@email.com
+                        olivia.martin@gmail.com
                       </p>
                     </div>
                     <div className="ml-auto font-medium">
@@ -261,7 +242,7 @@ const HomePage = () => {
                         Jackson Lee
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        jackson.lee@email.com
+                        jackson.lee@gmail.com
                       </p>
                     </div>
                     <div className="ml-auto font-medium">
@@ -278,7 +259,7 @@ const HomePage = () => {
                         Isabella Nguyen
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        isabella.nguyen@email.com
+                        isabella.nguyen@gmail.com
                       </p>
                     </div>
                     <div className="ml-auto font-medium">
@@ -295,7 +276,7 @@ const HomePage = () => {
                         William Kim
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        will@email.com
+                        will@gmail.com
                       </p>
                     </div>
                     <div className="ml-auto font-medium">
@@ -312,7 +293,7 @@ const HomePage = () => {
                         Sofia Davis
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        sofia.davis@email.com
+                        sofia.davis@gmail.com
                       </p>
                     </div>
                     <div className="ml-auto font-medium">

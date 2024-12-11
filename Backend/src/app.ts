@@ -8,7 +8,7 @@ import { config } from "./config/config";
 // import passport from "passport";
 // import session from "express-session";
 // import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import authRouter from "./GoogleAuthentication/authRouter";
+// import authRouter from "./GoogleAuthentication/authRouter";
 // import dotenv from "dotenv";
 
 const app = express();

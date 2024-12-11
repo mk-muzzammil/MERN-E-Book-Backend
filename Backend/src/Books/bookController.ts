@@ -52,6 +52,7 @@ const postCreateBook = async (
     coverImage: Express.Multer.File[];
     pdfFile: Express.Multer.File[];
   };
+  console.log(files);
 
   const coverfileName = files.coverImage[0].filename;
   const coverfilePath = path.resolve(

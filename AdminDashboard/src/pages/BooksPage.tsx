@@ -74,6 +74,9 @@ const BooksPage = () => {
       });
     },
   });
+  if (!booksData?.data?.books) {
+    return <p>No Books Of this author Found </p>;
+  }
   const totalPages = Math.ceil(
     (booksData?.data?.totalBooks || 0) / (booksData?.data?.booksPerPage || 1)
   );
@@ -124,60 +127,64 @@ const BooksPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {booksData?.data?.books.map((book: Book) => (
-                    <TableRow key={book._id}>
-                      <TableCell>
-                        <img
-                          src={book.coverImage}
-                          alt={book.title}
-                          width={42}
-                          height={42}
-                          className="overflow-hidden rounded-2xl"
-                        />
-                      </TableCell>
-                      <TableCell>{book.title}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{book.genre}</Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        122.3
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        {book.author.name}
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        {book.createdAt}
-                      </TableCell>
+                  {booksData?.data?.books ? (
+                    booksData?.data?.books.map((book: Book) => (
+                      <TableRow key={book._id}>
+                        <TableCell>
+                          <img
+                            src={book.coverImage}
+                            alt={book.title}
+                            width={42}
+                            height={42}
+                            className="overflow-hidden rounded-2xl"
+                          />
+                        </TableCell>
+                        <TableCell>{book.title}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{book.genre}</Badge>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          122.3
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {book.author.name}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {book.createdAt}
+                        </TableCell>
 
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              aria-haspopup="true"
-                              size="icon"
-                              variant="ghost"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                              onClick={() => hanldeEditAction(book._id)}
-                            >
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => hanldeDeleteAction(book._id)}
-                            >
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                aria-haspopup="true"
+                                size="icon"
+                                variant="ghost"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem
+                                onClick={() => hanldeEditAction(book._id)}
+                              >
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => hanldeDeleteAction(book._id)}
+                              >
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <p>No Books Of this author Found </p>
+                  )}
                 </TableBody>
               </Table>
             </CardContent>
