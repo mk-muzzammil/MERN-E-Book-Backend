@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerApi } from "@/http/api";
 import { LoaderPinwheelIcon } from "lucide-react";
 import { useTokenStore } from "@/zustandStore";
-
+import { AxiosError } from "axios";
 //here i am using simple way to get data from fields i will use react-form  to get data in login page
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -49,11 +49,12 @@ const RegisterPage = () => {
           <CardTitle className="text-xl">Sign Up</CardTitle>
           <CardDescription>
             Enter your information to create an account <br />
-            {mutation.error?.response?.data?.message && (
-              <p className="text-red-500 text-sm">
-                {mutation.error.response.data.message}
-              </p>
-            )}
+            {mutation.error instanceof AxiosError &&
+              mutation.error.response?.data?.message && (
+                <p className="text-red-500 text-sm">
+                  {mutation.error.response.data.message}
+                </p>
+              )}
           </CardDescription>
         </CardHeader>
         <CardContent>

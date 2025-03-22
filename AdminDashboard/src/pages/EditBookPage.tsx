@@ -1,8 +1,6 @@
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,15 +19,13 @@ import { QueryClient } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 
 const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters long.",
-  }),
-  genre: z.string().min(2, {
-    message: "Genre must be at least 2 characters long.",
-  }),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters long.",
-  }),
+  title: z.string().min(2, "Title must be at least 2 characters long."),
+  genre: z.string().min(2, "Genre must be at least 2 characters long."),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters long."),
+  coverImage: z.instanceof(File).optional(),
+  pdfFile: z.instanceof(File).optional(),
 });
 
 const EditBookPage = () => {
@@ -37,12 +33,10 @@ const EditBookPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const book = location.state?.book;
-  console.log(book);
 
   const mutation = useMutation({
     mutationFn: EditBookApi,
-    onSuccess: (response) => {
-      console.log("Book Edited successfully", response);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["books"] });
       queryClient.invalidateQueries({ queryKey: ["genres"] });
       navigate("/books");
@@ -52,11 +46,9 @@ const EditBookPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: book.title || "",
-      genre: book.genre || "",
-      description: book.description || "",
-      coverImage: undefined,
-      pdfFile: undefined,
+      title: book?.title || "",
+      genre: book?.genre || "",
+      description: book?.description || "",
     },
   });
 
@@ -65,10 +57,9 @@ const EditBookPage = () => {
     formData.append("title", values.title);
     formData.append("genre", values.genre);
     formData.append("description", values.description);
-    formData.append("coverImage", values.coverImage);
-    formData.append("pdfFile", values.pdfFile);
-    const _id = book._id;
-    mutation.mutate({ _id, formData });
+    if (values.coverImage) formData.append("coverImage", values.coverImage);
+    if (values.pdfFile) formData.append("pdfFile", values.pdfFile);
+    mutation.mutate({ _id: book._id, formData });
   }
 
   return (
@@ -125,50 +116,29 @@ const EditBookPage = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="coverImage"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cover Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  onChange={(e) =>
-                    field.onChange(
-                      e.target.files ? e.target.files[0] : undefined
-                    )
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="pdfFile"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>PDF File</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  onChange={(e) =>
-                    field.onChange(
-                      e.target.files ? e.target.files[0] : undefined
-                    )
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+        <FormItem>
+          <FormLabel>Cover Image</FormLabel>
+          <FormControl>
+            <Input
+              type="file"
+              onChange={(e) => form.setValue("coverImage", e.target.files?.[0])}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+        <FormItem>
+          <FormLabel>PDF File</FormLabel>
+          <FormControl>
+            <Input
+              type="file"
+              onChange={(e) => form.setValue("pdfFile", e.target.files?.[0])}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
         <div className="flex items-center gap-4">
           <Button type="submit" className="px-8" disabled={mutation.isPending}>
-            {mutation.isPending && <Loader2Icon className="animate-spin" />}
+            {mutation.isPending && <Loader2Icon className="animate-spin" />}{" "}
             <span className="ml-2">Edit Book</span>
           </Button>
         </div>

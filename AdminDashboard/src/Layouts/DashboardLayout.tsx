@@ -36,7 +36,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import React, { useState } from "react";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -53,15 +53,12 @@ import { fetchGenreList } from "@/http/api";
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
-  const [selectedGenre, setSelectedGenre] = useState<string>("");
-
   const { data, isLoading } = useQuery({
     queryKey: ["genres"],
     queryFn: fetchGenreList,
   });
 
   const handleSelectedGenre = (genre: string) => {
-    setSelectedGenre(genre);
     navigate(`/books?genre=${genre}`);
   };
   const location = useLocation();

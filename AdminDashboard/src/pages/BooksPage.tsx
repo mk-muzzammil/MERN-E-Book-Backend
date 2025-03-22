@@ -1,11 +1,6 @@
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  deleteBookApi,
-  EditBookApi,
-  fetchBookList,
-  getSingleBook,
-} from "@/http/api";
+import { deleteBookApi, fetchBookList, getSingleBook } from "@/http/api";
 import {
   Table,
   TableBody,
@@ -33,7 +28,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Loader, MoreHorizontal } from "lucide-react";
 import { Book } from "@/types";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -91,7 +86,7 @@ const BooksPage = () => {
     mutation.mutate(_id);
     console.log("Delete", _id);
   };
-  // const filteredBooks = useMemo(() => {
+  // const filteredBooks =() => {
   //   if (!genreFilter) return booksData?.data?.books || [];
   //   return booksData?.data?.books.filter(
   //     (book: Book) => book.genre.toLowerCase() === genreFilter.toLowerCase()
@@ -198,10 +193,11 @@ const BooksPage = () => {
 
           <Pagination>
             <PaginationContent>
-              <PaginationPrevious
-                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-              />
+              {currentPage > 1 && (
+                <PaginationPrevious
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                />
+              )}
               {Array.from({ length: totalPages }, (_, index) => (
                 <PaginationItem key={index}>
                   <PaginationLink
@@ -212,12 +208,13 @@ const BooksPage = () => {
                   </PaginationLink>
                 </PaginationItem>
               ))}
-              <PaginationNext
-                onClick={() =>
-                  handlePageChange(Math.min(totalPages, currentPage + 1))
-                }
-                disabled={currentPage === totalPages}
-              />
+              {currentPage < totalPages && (
+                <PaginationNext
+                  onClick={() =>
+                    handlePageChange(Math.min(totalPages, currentPage + 1))
+                  }
+                />
+              )}
             </PaginationContent>
           </Pagination>
         </div>

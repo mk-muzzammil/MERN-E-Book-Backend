@@ -4,11 +4,11 @@
   "description": "This is Backend of Ebook Web App",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run build && node dist/server.js",
     "dev": "nodemon server.ts",
     "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "docker:publish": "docker build -t muzzammil759/elib-backend:v1 --platform linux/amd64 . && docker push muzzammil759/elib-backend:v1 ",
-    "start": "node dist/server.js",
     "DockerRun": "docker run -it -p 8080:8080 muzzammil759/elib-backend:v3"
   },
   "keywords": [
@@ -35,7 +35,7 @@
     "@types/passport-google-oauth20": "^2.0.16",
     "eslint": "^9.8.0",
     "globals": "^15.9.0",
-    "nodemon": "^3.1.4",
+    "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1"
